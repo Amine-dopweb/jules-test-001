@@ -1,0 +1,5 @@
+{
+  "name": "AI Powered Agenda",
+  "description": "A smart agenda application to organize your day using AI to parse natural language inputs for creating tasks and events.",
+  "requestFramePermissions": []
+}
