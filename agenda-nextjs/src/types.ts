@@ -7,6 +7,7 @@ export interface AgendaItem {
   time: string; // HH:MM
   isCompleted: boolean;
   createdAt: number; // Timestamp for sorting
+  assignedTo?: string;
 }
 
 export interface ParsedAgendaInfo {
@@ -14,5 +15,6 @@ export interface ParsedAgendaInfo {
   description?: string;
   date?: string; // YYYY-MM-DD
   time?: string; // HH:MM
+  assignedTo?: string;
 }
     

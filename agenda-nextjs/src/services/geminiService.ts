@@ -6,9 +6,11 @@ import { ParsedAgendaInfo } from "../types";
 let ai: GoogleGenAI | null = null;
 let geminiAvailable = false;
 
-if (process.env.API_KEY) {
+const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+if (apiKey) {
   try {
-    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    ai = new GoogleGenAI({ apiKey });
     geminiAvailable = true;
   } catch (error) {
     console.error("Failed to initialize GoogleGenAI:", error);
@@ -16,7 +18,7 @@ if (process.env.API_KEY) {
     geminiAvailable = false;
   }
 } else {
-    console.warn("Gemini API key not found in process.env.API_KEY. AI features will be disabled.");
+    console.warn("Gemini API key not found in process.env.NEXT_PUBLIC_API_KEY. AI features will be disabled. Ensure the NEXT_PUBLIC_API_KEY environment variable is set.");
     geminiAvailable = false;
 }
 

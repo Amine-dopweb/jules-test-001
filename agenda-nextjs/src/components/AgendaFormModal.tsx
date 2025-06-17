@@ -16,6 +16,7 @@ export const AgendaFormModal: React.FC<AgendaFormModalProps> = ({ isOpen, onClos
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
+  const [assignedTo, setAssignedTo] = useState(''); // New state for assignee
   const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,12 +25,16 @@ export const AgendaFormModal: React.FC<AgendaFormModalProps> = ({ isOpen, onClos
       setDescription(initialData.description || '');
       setDate(initialData.date || '');
       setTime(initialData.time || '');
+      // Check if initialData has assignedTo, it could be from AgendaItem or ParsedAgendaInfo
+      const initialAssignedTo = (initialData as AgendaItem).assignedTo || (initialData as ParsedAgendaInfo).assignedTo;
+      setAssignedTo(initialAssignedTo || '');
     } else {
       // Reset form if no initial data (e.g., opening for new manual entry)
       setTitle('');
       setDescription('');
       setDate('');
       setTime('');
+      setAssignedTo(''); // Reset assignee
     }
     setFormError(null); // Clear errors when modal opens or data changes
   }, [initialData, isOpen]);
@@ -40,7 +45,7 @@ export const AgendaFormModal: React.FC<AgendaFormModalProps> = ({ isOpen, onClos
       setFormError('Title is required.');
       return;
     }
-    onSubmit({ title, description, date, time });
+    onSubmit({ title, description, date, time, assignedTo }); // Include assignedTo in submit
     setFormError(null);
   };
 
@@ -103,6 +108,17 @@ export const AgendaFormModal: React.FC<AgendaFormModalProps> = ({ isOpen, onClos
                 style={{ colorScheme: 'dark' }} // Hint for browser styling of time picker
               />
             </div>
+          </div>
+          <div>
+            <label htmlFor="assignedTo" className="block text-sm font-medium text-slate-300 mb-1">Assign to (optional)</label>
+            <input
+              type="text"
+              id="assignedTo"
+              value={assignedTo}
+              onChange={(e) => setAssignedTo(e.target.value)}
+              className="w-full p-3 bg-slate-700 border border-slate-600 rounded-md focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors text-slate-100 placeholder-slate-400"
+              placeholder="e.g., Person A, Person B"
+            />
           </div>
           {formError && <p className="text-sm text-red-400 bg-red-900/50 p-2 rounded-md">{formError}</p>}
           <div className="flex justify-end space-x-3 pt-4">
